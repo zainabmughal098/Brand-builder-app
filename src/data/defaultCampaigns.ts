@@ -1,0 +1,275 @@
+import { Campaign, MediumMeta } from '../types';
+
+export const MEDIUM_CATALOG: MediumMeta[] = [
+  {
+    type: 'billboard',
+    label: 'Highway & Urban Billboard',
+    category: 'Outdoor',
+    aspectRatio: '16:9',
+    defaultResolution: '3840 x 2160 (4K UHD)',
+    printDpi: 300,
+    environmentDescription: 'Dusk cityscape monolith architectural billboard mockup, long shadow casting, no people in frame',
+    mockupContext: 'Dramatic scale, architectural framing, pure product silhouette centerpiece'
+  },
+  {
+    type: 'newspaper',
+    label: 'Broadsheet Print Ad',
+    category: 'Print',
+    aspectRatio: '3:4',
+    defaultResolution: '2400 x 3200 (Print Ready)',
+    printDpi: 300,
+    environmentDescription: 'Minimalist Swiss typography print advertisement on textured newsprint paper stock, fine line grid, monochrome contrast, no people',
+    mockupContext: 'Editorial layout, classic broadsheet masthead, high-contrast monochrome still life'
+  },
+  {
+    type: 'social_post',
+    label: 'Studio Social Media Post',
+    category: 'Digital',
+    aspectRatio: '1:1',
+    defaultResolution: '2048 x 2048 (Retina Square)',
+    environmentDescription: 'High-end studio still life on concrete limestone podium, soft diffused directional light, zero humans, minimalist luxury',
+    mockupContext: 'Instagram / LinkedIn 1:1 editorial product carousel format'
+  },
+  {
+    type: 'subway_poster',
+    label: 'Transit Terminal Lightbox',
+    category: 'Outdoor',
+    aspectRatio: '9:16',
+    defaultResolution: '2160 x 3840 (Vertical 4K)',
+    printDpi: 300,
+    environmentDescription: 'Brushed aluminum illuminated lightbox frame on dark subway station tiles, crisp geometric lighting, zero people',
+    mockupContext: 'High-visibility vertical transit terminal showcase'
+  },
+  {
+    type: 'magazine_spread',
+    label: 'Editorial Magazine Spread',
+    category: 'Print',
+    aspectRatio: '16:9',
+    defaultResolution: '3840 x 2160 (Double Page)',
+    printDpi: 300,
+    environmentDescription: 'Open architectural design quarterly double page spread, soft central gutter fold, subtle shadow on matte heavy stock paper, no people',
+    mockupContext: 'Monograph style luxury architectural feature'
+  },
+  {
+    type: 'storefront_display',
+    label: 'Flagship Vitrine Display',
+    category: 'Retail',
+    aspectRatio: '4:3',
+    defaultResolution: '2560 x 1920 (Showcase HD)',
+    environmentDescription: 'Dark luxury minimalist boutique storefront window, product elevated in glass museum vitrine with ceiling spotlight, no people',
+    mockupContext: 'Curated boutique showcase with brass plaque and museum pedestals'
+  },
+  {
+    type: 'packaging_unboxing',
+    label: 'Rigid Packaging Still Life',
+    category: 'Retail',
+    aspectRatio: '1:1',
+    defaultResolution: '2048 x 2048 (Square Studio)',
+    environmentDescription: 'Top-tier matte unboxing scene, rigid embossed presentation box standing beside the pristine product, no people, studio shadows',
+    mockupContext: 'Unboxing ceremony with debossed logos and precision inserts'
+  },
+  {
+    type: 'digital_hero',
+    label: 'E-Commerce Hero Banner',
+    category: 'Digital',
+    aspectRatio: '16:9',
+    defaultResolution: '3840 x 2160 (Web Ultra-Wide)',
+    environmentDescription: 'Sleek dark mode digital commerce hero section, floating sculptural product render with subtle ambient glow and clean typography, zero humans',
+    mockupContext: 'Direct-to-consumer flagship website hero canvas'
+  }
+];
+
+export const INITIAL_CAMPAIGNS: Campaign[] = [
+  {
+    id: 'camp-aura-sound',
+    name: 'AURA 01 Minimalist Audio Campaign',
+    productName: 'AURA Monolith Soundbar',
+    category: 'Acoustic Industrial Design',
+    tagline: 'Pure Acoustic Clarity in Monolithic Ceramic',
+    description: 'An architectural home acoustic sculpture crafted from high-density matte ceramic and aerospace-grade anodized aluminum. Conceived without physical buttons, featuring invisible micro-perforations.',
+    targetAudience: 'Audiophiles, architects, minimalists, industrial design enthusiasts',
+    brandEssence: 'Restrained, sculptural, timeless, tactile silence',
+    modelVariant: 'gemini-3.1-flash-lite-image',
+    version: 4,
+    lastEditedBy: 'bsai23024 (Lead)',
+    createdAt: '2026-10-09T14:20:00Z',
+    updatedAt: new Date().toISOString(),
+    visualDna: {
+      primaryColor: '#1E2128',
+      secondaryColor: '#E2E8F0',
+      accentColor: '#D97706',
+      colorNames: {
+        primary: 'Deep Obsidian Slate',
+        secondary: 'Frosted Alabaster',
+        accent: 'Burnished Amber'
+      },
+      materials: ['Matte cast ceramic', 'Brushed anodized titanium', 'Acoustic textile weave'],
+      silhouette: 'Monolithic elongated prism with 16mm chamfered edges and cylindrical crown',
+      finish: 'Satin micro-sandblasted soft-touch surface',
+      typographyStyle: 'Neo-Grotesque Swiss Sans & JetBrains Monospace accents',
+      brandMark: 'Debossed concentric minimalist sound aperture ring',
+      lightingStyle: 'High-contrast 45-degree directional museum spotlight with deep soft falloff'
+    },
+    mediums: [
+      {
+        id: 'med-aura-billboard',
+        mediumType: 'billboard',
+        title: 'Highway 101 Horizon Billboard',
+        aspectRatio: '16:9',
+        imageUrl: '',
+        headline: 'SILENCE HAS A SHAPE.',
+        subcopy: 'The AURA Monolith Soundbar. Available now in Obsidian Ceramic.',
+        mediumDescription: 'Grand architectural horizontal display framed against twilight metropolitan architecture.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '3840 x 2160 (4K)',
+        fileSizeBytes: 3420000,
+        consistencyScore: 98,
+        generatedAt: '2026-10-11T03:15:00Z',
+        prompt: 'A grand minimalist architectural billboard alongside an urban dusk highway displaying the AURA Monolith Soundbar. Deep obsidian slate ceramic finish, burnished amber accent ring, sculptural silhouette. Professional minimalist luxury advertising. STRICT NEGATIVE: No people, no humans, no pedestrians, no faces.',
+        negativePrompt: 'people, human, crowd, hands, face, silhouette of person, cluttered, messy, kitsch'
+      },
+      {
+        id: 'med-aura-newspaper',
+        mediumType: 'newspaper',
+        title: 'Architectural Gazette Print Feature',
+        aspectRatio: '3:4',
+        imageUrl: '',
+        headline: 'A Quiet Rebellion Against Acoustic Noise',
+        subcopy: 'Why monolithic geometry is reshaping how we experience modern interior audio.',
+        mediumDescription: 'Full-page broadsheet editorial newspaper ad with fine halftone grain and Swiss grid.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '2400 x 3200 (300 DPI)',
+        fileSizeBytes: 4120000,
+        consistencyScore: 96,
+        generatedAt: '2026-10-11T03:18:00Z',
+        prompt: 'Minimalist newspaper print advertisement for the AURA Monolith Soundbar. Broadsheet newsprint paper texture, high contrast black and white halftone styling, Swiss typographic column grid. The ceramic soundbar rests on architectural limestone. STRICT NEGATIVE: No people, no hands, no human presence.',
+        negativePrompt: 'people, person, holding, reading, face, hands, body, colorful graffiti'
+      },
+      {
+        id: 'med-aura-social',
+        mediumType: 'social_post',
+        title: 'Studio Podium Instagram Post',
+        aspectRatio: '1:1',
+        imageUrl: '',
+        headline: 'Form Follows Frequencies.',
+        subcopy: 'Every chamfer engineered for phase alignment. No unnecessary elements.',
+        mediumDescription: 'Square format studio product capture on raw concrete pedestal with dramatic raking light.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '2048 x 2048',
+        fileSizeBytes: 2890000,
+        consistencyScore: 99,
+        generatedAt: '2026-10-11T03:22:00Z',
+        prompt: 'Studio still-life product photography of the AURA Monolith Soundbar resting on a minimalist brutalist concrete pedestal. Deep obsidian slate matte ceramic with burnished amber rim. Soft diffused shadows, dramatic Scandinavian mood. STRICT NEGATIVE: Absolutely no humans, no hands, empty studio environment.',
+        negativePrompt: 'human, people, model, hand touching, fingers, selfie, casual room'
+      },
+      {
+        id: 'med-aura-subway',
+        mediumType: 'subway_poster',
+        title: 'Transit Lightbox Display',
+        aspectRatio: '9:16',
+        imageUrl: '',
+        headline: 'TUNED FOR CONTEMPLATION.',
+        subcopy: 'Acoustic architecture for serene spaces.',
+        mediumDescription: 'Illuminated vertical brushed aluminum poster box on subway platform.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '2160 x 3840 (Vertical 4K)',
+        fileSizeBytes: 3950000,
+        consistencyScore: 97,
+        generatedAt: '2026-10-11T03:26:00Z',
+        prompt: 'Vertical illuminated subway advertising poster displaying the AURA Monolith Soundbar inside a sleek brushed steel lightbox on a minimal subway wall. High-contrast product lighting. STRICT NEGATIVE: No commuters, no passengers, zero humans.',
+        negativePrompt: 'crowds, commuters, passengers, people walking, blur of people, heads'
+      }
+    ]
+  },
+  {
+    id: 'camp-vertex-watch',
+    name: 'VERTEX T1 Architectural Chronograph',
+    productName: 'VERTEX T1 Timepiece',
+    category: 'Horology & Precision Instruments',
+    tagline: 'Measured in Gravity. Carved in Titanium.',
+    description: 'A pure grade-5 titanium timepiece featuring a brutalist stepped bezel, sapphire crystal lens, and a monolithic geometric case profile with micro-matte bead blasted finish.',
+    targetAudience: 'Collectors, design purists, architects',
+    brandEssence: 'Austere, uncompromising, mathematical precision',
+    modelVariant: 'gemini-3.1-flash-lite-image',
+    version: 2,
+    lastEditedBy: 'bsai23024 (Lead)',
+    createdAt: '2026-10-10T11:00:00Z',
+    updatedAt: new Date().toISOString(),
+    visualDna: {
+      primaryColor: '#2B2D42',
+      secondaryColor: '#8D99AE',
+      accentColor: '#EF233C',
+      colorNames: {
+        primary: 'Titanium Graphite',
+        secondary: 'Frosted Steel',
+        accent: 'Signal Crimson'
+      },
+      materials: ['Grade 5 Titanium', 'Anti-reflective Sapphire Crystal', 'Fluorocarbon elastomer'],
+      silhouette: 'Octagonal stepped bezel with monolithic integrated lugs',
+      finish: 'Micro-bead blasted ultra-matte finish',
+      typographyStyle: 'Technical DIN Monospace & Swiss Neue Haas',
+      brandMark: 'Minimalist red datum vertex point',
+      lightingStyle: 'Chiaroscuro clinical studio rim lighting'
+    },
+    mediums: [
+      {
+        id: 'med-vertex-billboard',
+        mediumType: 'billboard',
+        title: 'Highway Mega-Billboard',
+        aspectRatio: '16:9',
+        imageUrl: '',
+        headline: 'PRECISION WITHOUT COMPROMISE.',
+        subcopy: 'The VERTEX T1. Milled from solid Grade 5 Titanium.',
+        mediumDescription: 'Minimalist highway billboard with dramatic titanium macro highlights.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '3840 x 2160',
+        fileSizeBytes: 3200000,
+        consistencyScore: 98,
+        generatedAt: '2026-10-11T02:10:00Z',
+        prompt: 'Monumental architectural billboard showing the VERTEX T1 titanium timepiece resting on raw dark slate. Dramatic low-key lighting highlighting the bead-blasted metal and signal red datum point. STRICT NEGATIVE: No people, no wrist, no hands, zero humans.',
+        negativePrompt: 'wrist, person wearing watch, hands, human arm, faces, crowd'
+      },
+      {
+        id: 'med-vertex-newspaper',
+        mediumType: 'newspaper',
+        title: 'Financial Design Review Print Ad',
+        aspectRatio: '3:4',
+        imageUrl: '',
+        headline: 'Time Measured as Architecture',
+        subcopy: 'Why traditional watchmaking gives way to monolithic engineering.',
+        mediumDescription: 'Monochrome newspaper ad with high contrast macro horology still life.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '2400 x 3200',
+        fileSizeBytes: 3800000,
+        consistencyScore: 97,
+        generatedAt: '2026-10-11T02:15:00Z',
+        prompt: 'Crisp newspaper print advertisement of the VERTEX T1 chronograph. Broadsheet halftone newsprint styling, Swiss geometric typography. Macro product shot. STRICT NEGATIVE: No people, no wrist, no human models.',
+        negativePrompt: 'human, wrist, mannequin, person, holding, fingers'
+      },
+      {
+        id: 'med-vertex-social',
+        mediumType: 'social_post',
+        title: 'Editorial Square Still Life',
+        aspectRatio: '1:1',
+        imageUrl: '',
+        headline: 'Grade 5 Titanium. Zero Filler.',
+        subcopy: 'Engineered for extreme permanence.',
+        mediumDescription: 'Clean studio still life on dark basalt stone.',
+        status: 'ready',
+        modelUsed: 'Nano-Banana (gemini-3.1-flash-lite-image)',
+        resolution: '2048 x 2048',
+        fileSizeBytes: 2750000,
+        consistencyScore: 99,
+        generatedAt: '2026-10-11T02:20:00Z',
+        prompt: 'Studio product still life of the VERTEX T1 titanium timepiece on raw black volcanic basalt. Signal red accents visible. Professional studio lighting with soft highlights. STRICT NEGATIVE: No humans, no wrist, no hands.',
+        negativePrompt: 'wrist, hand, person, model, clothes'
+      }
+    ]
+  }
+];

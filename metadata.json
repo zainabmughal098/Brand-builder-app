@@ -1,0 +1,6 @@
+{
+  "name": "Brand builder app",
+  "description": "Imagine consistent, human-free minimalist product campaigns across billboards, newspapers, and social media with Nano-Banana, real-time collaboration, and cloud sync.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
