@@ -144,7 +144,7 @@ function renderBillboard(
   }
 
   // Consistent Product Silhouette inside Billboard (Right side)
-  drawConsistentProduct(ctx, bbX + bbW * 0.68, bbY + bbH * 0.55, bbH * 0.65, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, bbX + bbW * 0.68, bbY + bbH * 0.55, bbH * 0.65, pColor, sColor, aColor, dna, title);
 
   // Brand Name & Minimalist Typography (Left side)
   ctx.fillStyle = '#FFFFFF';
@@ -245,7 +245,7 @@ function renderNewspaper(
   // Halftone monochrome product render
   const prX = mX + mW * 0.55;
   const prY = adY + adH * 0.5;
-  drawConsistentProduct(ctx, prX, prY, adH * 0.55, '#1A202C', '#E2E8F0', '#4A5568', dna);
+  drawConsistentProduct(ctx, prX, prY, adH * 0.55, '#1A202C', '#E2E8F0', '#4A5568', dna, title);
 
   // Newspaper body text columns (Lorem Swiss design copy)
   ctx.font = '400 14px Georgia, serif';
@@ -301,7 +301,7 @@ function renderSocialPost(
   ctx.fillRect(pedX, pedY, pedW, 8); // rim highlight
 
   // Main Product on Podium
-  drawConsistentProduct(ctx, w / 2, pedY - h * 0.22, h * 0.48, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, w / 2, pedY - h * 0.22, h * 0.48, pColor, sColor, aColor, dna, title);
 
   // Social Post UI minimal overlay (Brand watermark + handle)
   ctx.fillStyle = '#FFFFFF';
@@ -356,7 +356,7 @@ function renderSubwayPoster(
   ctx.fillRect(fX, fY, fW, fH);
 
   // Dramatic architectural product lighting
-  drawConsistentProduct(ctx, fX + fW / 2, fY + fH * 0.44, fH * 0.48, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, fX + fW / 2, fY + fH * 0.44, fH * 0.48, pColor, sColor, aColor, dna, title);
 
   // Transit Poster Typography
   ctx.fillStyle = '#FFFFFF';
@@ -398,7 +398,7 @@ function renderMagazineSpread(
   ctx.fillRect(w / 2 - 40, 0, 80, h);
 
   // Left page: Product still life with soft shadows
-  drawConsistentProduct(ctx, w * 0.28, h * 0.52, h * 0.52, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, w * 0.28, h * 0.52, h * 0.52, pColor, sColor, aColor, dna, title);
 
   // Right page: Monograph typography & specifications
   const rX = w * 0.56;
@@ -470,7 +470,7 @@ function renderStorefront(
   ctx.fillRect(0, 0, w, h);
 
   // The product displayed in vitrine
-  drawConsistentProduct(ctx, w / 2, vY + vH * 0.35, vH * 0.55, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, w / 2, vY + vH * 0.35, vH * 0.55, pColor, sColor, aColor, dna, title);
 
   // Vitrine etched brass plaque
   ctx.fillStyle = '#D4AF37';
@@ -514,7 +514,7 @@ function renderPackaging(
   ctx.fillText(title.toUpperCase(), bX + 30, bY + 60);
 
   // Unboxed product standing proudly
-  drawConsistentProduct(ctx, w * 0.68, h * 0.52, h * 0.52, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, w * 0.68, h * 0.52, h * 0.52, pColor, sColor, aColor, dna, title);
 
   // Studio text
   ctx.fillStyle = '#FFFFFF';
@@ -545,7 +545,7 @@ function renderDigitalHero(
   ctx.fillRect(0, 0, w, h);
 
   // Product spotlight in center-right
-  drawConsistentProduct(ctx, w * 0.65, h * 0.5, h * 0.6, pColor, sColor, aColor, dna);
+  drawConsistentProduct(ctx, w * 0.65, h * 0.5, h * 0.6, pColor, sColor, aColor, dna, title);
 
   // Left copy block
   const lX = w * 0.1;
@@ -574,8 +574,16 @@ function drawConsistentProduct(
   primary: string,
   secondary: string,
   accent: string,
-  dna: VisualDNA
+  dna: VisualDNA,
+  productTitle: string = ''
 ) {
+  const isEyewear = /glass|eyewear|spectacle|optic|lens|augmented|ar/i.test(productTitle || dna.silhouette || '');
+
+  if (isEyewear) {
+    drawArchitecturalGlasses(ctx, cx, cy, size, primary, secondary, accent, dna);
+    return;
+  }
+
   ctx.save();
   ctx.translate(cx, cy);
 
@@ -645,6 +653,141 @@ function drawConsistentProduct(
   ctx.beginPath();
   ctx.moveTo(-pW / 2 + 3, -pH / 2 + crownH + 12);
   ctx.lineTo(-pW / 2 + 3, pH / 2 - 16);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+/**
+ * Draws Augmented Reality AI glasses on architectural podium (STRICTLY NO HUMANS)
+ */
+function drawArchitecturalGlasses(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  size: number,
+  primary: string,
+  secondary: string,
+  accent: string,
+  dna: VisualDNA
+) {
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // Soft podium / ground shadow
+  const sh = ctx.createRadialGradient(0, size * 0.28, size * 0.05, 0, size * 0.28, size * 0.55);
+  sh.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+  sh.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = sh;
+  ctx.beginPath();
+  ctx.ellipse(0, size * 0.28, size * 0.55, size * 0.14, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  const gW = size * 0.9;
+  const lensW = size * 0.36;
+  const lensH = size * 0.28;
+  const bridgeW = size * 0.12;
+
+  // Temples (Arms extending backwards into perspective)
+  ctx.strokeStyle = primary;
+  ctx.lineWidth = 6;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  // Left temple
+  ctx.moveTo(-gW / 2 + 10, -lensH * 0.1);
+  ctx.lineTo(-gW * 0.58, -lensH * 0.75);
+  // Right temple
+  ctx.moveTo(gW / 2 - 10, -lensH * 0.1);
+  ctx.lineTo(gW * 0.58, -lensH * 0.75);
+  ctx.stroke();
+
+  // Micro-Projector Sensor Housings on temple hinges (accent color)
+  ctx.fillStyle = accent;
+  ctx.fillRect(-gW / 2 + 4, -lensH * 0.25, 12, 10);
+  ctx.fillRect(gW / 2 - 16, -lensH * 0.25, 12, 10);
+
+  // Waveguide Lenses (Diffractive optical crystal glow)
+  const drawWaveguideLens = (lx: number, ly: number) => {
+    ctx.save();
+    // Lens body gradient
+    const lGrad = ctx.createLinearGradient(lx - lensW / 2, ly - lensH / 2, lx + lensW / 2, ly + lensH / 2);
+    lGrad.addColorStop(0, 'rgba(26, 32, 44, 0.85)');
+    lGrad.addColorStop(0.5, 'rgba(15, 23, 42, 0.75)');
+    lGrad.addColorStop(1, 'rgba(56, 189, 248, 0.2)'); // Cyan waveguide reflection
+    ctx.fillStyle = lGrad;
+
+    roundRect(ctx, lx - lensW / 2, ly - lensH / 2, lensW, lensH, 14);
+    ctx.fill();
+
+    // Waveguide diffractive micro-grid (Holographic HUD reflection)
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+    ctx.lineWidth = 1;
+    for (let y = ly - lensH * 0.35; y < ly + lensH * 0.35; y += 8) {
+      ctx.beginPath();
+      ctx.moveTo(lx - lensW * 0.38, y);
+      ctx.lineTo(lx + lensW * 0.38, y);
+      ctx.stroke();
+    }
+
+    // Specular diagonal reflection flare
+    const flare = ctx.createLinearGradient(lx - lensW / 2, ly - lensH / 2, lx + lensW / 2, ly + lensH / 2);
+    flare.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+    flare.addColorStop(0.3, 'rgba(255, 255, 255, 0.05)');
+    flare.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = flare;
+    roundRect(ctx, lx - lensW / 2, ly - lensH / 2, lensW, lensH, 14);
+    ctx.fill();
+
+    // Titanium Rim Frame
+    ctx.strokeStyle = primary;
+    ctx.lineWidth = 4;
+    roundRect(ctx, lx - lensW / 2, ly - lensH / 2, lensW, lensH, 14);
+    ctx.stroke();
+
+    // Outer subtle chamfer metallic highlight
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(lx - lensW / 2 + 14, ly - lensH / 2);
+    ctx.lineTo(lx + lensW / 2 - 14, ly - lensH / 2);
+    ctx.stroke();
+
+    ctx.restore();
+  };
+
+  // Draw Left and Right Waveguide Lenses
+  drawWaveguideLens(-lensW / 2 - bridgeW / 2, 0);
+  drawWaveguideLens(lensW / 2 + bridgeW / 2, 0);
+
+  // Central Titanium Bridge
+  ctx.strokeStyle = primary;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(-bridgeW / 2, -lensH * 0.2);
+  ctx.quadraticCurveTo(0, -lensH * 0.32, bridgeW / 2, -lensH * 0.2);
+  ctx.stroke();
+
+  // Subtle lower bridge strut
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-bridgeW / 2 + 2, -lensH * 0.18);
+  ctx.quadraticCurveTo(0, -lensH * 0.3, bridgeW / 2 - 2, -lensH * 0.18);
+  ctx.stroke();
+
+  // Center Spatial Sensor / Optical Aperture (Accent Dot)
+  ctx.fillStyle = accent;
+  ctx.beginPath();
+  ctx.arc(0, -lensH * 0.26, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Subtle Laser-etched Chevron Datum Mark on left temple
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(-gW / 2 + 2, -lensH * 0.35);
+  ctx.lineTo(-gW / 2 + 6, -lensH * 0.32);
+  ctx.lineTo(-gW / 2 + 2, -lensH * 0.29);
   ctx.stroke();
 
   ctx.restore();

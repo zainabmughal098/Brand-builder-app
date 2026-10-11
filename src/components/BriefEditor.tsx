@@ -78,9 +78,40 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
     'subway_poster',
   ]);
   const [newMaterial, setNewMaterial] = useState('');
-  const [activeTab, setActiveTab] = useState<'brief' | 'dna' | 'mediums'>('brief');
+  const [activeTab, setActiveTab] = useState<'brief' | 'dna' | 'mediums' | 'guidelines'>('brief');
+  const [selectedStyle, setSelectedStyle] = useState<string>('Minimalist Precision');
+  const [isDraftingCopy, setIsDraftingCopy] = useState(false);
 
   const dna = campaign.visualDna;
+
+  const VISUAL_STYLES = [
+    { name: 'Minimalist Precision', desc: 'Clinical studio lighting, razor-sharp chamfers, muted monochrome' },
+    { name: 'Swiss Architectural', desc: 'Brutalist concrete backdrop, high-contrast shadows, Swiss grid' },
+    { name: 'Scandinavian Studio', desc: 'Warm limestone pedestal, soft raking dusk light, restrained serenity' },
+    { name: 'High-Tech Spatial', desc: 'Dark obsidian background, subtle diffractive holographic prism glints' },
+  ];
+
+  const handleDraftCopy = () => {
+    setIsDraftingCopy(true);
+    setTimeout(() => {
+      const isGlasses = /glass|eyewear|ar|augmented/i.test(campaign.productName);
+      if (isGlasses) {
+        onChange({
+          tagline: 'Invisible Intelligence. Carved in Titanium.',
+          description: 'Ultra-lightweight augmented reality spatial computing eyewear engineered with diffractive optical waveguide lenses and neural micro-projectors in an aerospace Grade-5 titanium chassis. Pure still-life display without human subjects.',
+          category: 'Spatial Optics & Wearable Computing',
+          targetAudience: 'Architects, spatial designers, tech purists, minimalists',
+          brandEssence: 'Weightless, luminous, architectural, hyper-precision',
+        });
+      } else {
+        onChange({
+          tagline: `Form Follows Restraint. Pure ${dna.materials[0] || 'Material'}.`,
+          description: `Sculptural ${campaign.category || 'industrial design'} object with seamless chamfered edges, finished in ${dna.finish}. Conceived without superfluous ornamentation.`,
+        });
+      }
+      setIsDraftingCopy(false);
+    }, 400);
+  };
 
   const handleDnaChange = (field: keyof VisualDNA, value: any) => {
     onChange({
@@ -143,18 +174,18 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                 : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            Product Brief
+            Brief
           </button>
           <button
             onClick={() => setActiveTab('dna')}
-            className={`flex-1 py-1.5 rounded-md transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-1.5 rounded-md transition-all flex items-center justify-center gap-1 ${
               activeTab === 'dna'
                 ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-xs font-semibold'
                 : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             <Lock className="w-3 h-3 text-amber-500" />
-            Visual DNA
+            DNA
           </button>
           <button
             onClick={() => setActiveTab('mediums')}
@@ -164,7 +195,17 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                 : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            Mediums ({selectedMediums.length})
+            Mediums
+          </button>
+          <button
+            onClick={() => setActiveTab('guidelines')}
+            className={`flex-1 py-1.5 rounded-md transition-all ${
+              activeTab === 'guidelines'
+                ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-xs font-semibold'
+                : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+            }`}
+          >
+            Guidelines
           </button>
         </div>
       </div>
@@ -175,17 +216,52 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
         {activeTab === 'brief' && (
           <div className="space-y-4">
             <div>
-              <label className="block font-semibold text-neutral-700 dark:text-neutral-300 mb-1">
-                Product Name
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="font-semibold text-neutral-700 dark:text-neutral-300">
+                  Product Name
+                </label>
+                <button
+                  type="button"
+                  onClick={handleDraftCopy}
+                  disabled={isDraftingCopy}
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 hover:underline cursor-pointer"
+                >
+                  <Wand2 className="w-3 h-3" />
+                  <span>{isDraftingCopy ? 'Drafting...' : 'Draft Copy with AI'}</span>
+                </button>
+              </div>
               <input
                 type="text"
                 value={campaign.productName}
                 onFocus={() => onFieldFocus?.('productName')}
                 onChange={(e) => onChange({ productName: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white outline-hidden font-medium"
-                placeholder="e.g. AURA Monolith Soundbar"
+                placeholder="e.g. Augmented Reality AI glasses"
               />
+            </div>
+
+            {/* Visual Style Toggle */}
+            <div>
+              <label className="block font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">
+                Visual Campaign Style
+              </label>
+              <div className="grid grid-cols-2 gap-1.5">
+                {VISUAL_STYLES.map((st) => (
+                  <button
+                    key={st.name}
+                    type="button"
+                    onClick={() => setSelectedStyle(st.name)}
+                    className={`p-2 rounded-lg border text-left transition-colors cursor-pointer ${
+                      selectedStyle === st.name
+                        ? 'border-neutral-900 dark:border-white bg-neutral-100 dark:bg-neutral-800 font-semibold text-neutral-900 dark:text-white'
+                        : 'border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <div className="text-[11px]">{st.name}</div>
+                    <div className="text-[9px] text-neutral-400 truncate mt-0.5">{st.desc}</div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>
@@ -198,7 +274,7 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                 onFocus={() => onFieldFocus?.('category')}
                 onChange={(e) => onChange({ category: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white outline-hidden"
-                placeholder="e.g. Acoustic Industrial Design"
+                placeholder="e.g. Spatial Optics & Wearable Computing"
               />
             </div>
 
@@ -212,7 +288,7 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                 onFocus={() => onFieldFocus?.('tagline')}
                 onChange={(e) => onChange({ tagline: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white outline-hidden"
-                placeholder="e.g. Pure Acoustic Clarity in Monolithic Ceramic"
+                placeholder="e.g. Invisible Intelligence. Carved in Titanium."
               />
             </div>
 
@@ -266,34 +342,34 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                   <Cpu className="w-3.5 h-3.5 text-amber-500" />
                   Image Model Engine
                 </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-medium">
-                  Nano-Banana
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium">
+                  Nano-Banana / Gemini 2.5 Only
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-[11px]">
                 <button
                   type="button"
                   onClick={() => onChange({ modelVariant: 'gemini-3.1-flash-lite-image' })}
-                  className={`p-2 rounded-md border text-left transition-colors ${
+                  className={`p-2 rounded-md border text-left transition-colors cursor-pointer ${
                     campaign.modelVariant === 'gemini-3.1-flash-lite-image'
                       ? 'border-neutral-900 dark:border-white bg-white dark:bg-neutral-700 font-semibold text-neutral-900 dark:text-white'
                       : 'border-neutral-200 dark:border-neutral-700 text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
                   }`}
                 >
                   <div>Nano-Banana</div>
-                  <div className="text-[9px] text-neutral-400">3.1-flash-lite (Fast)</div>
+                  <div className="text-[9px] text-neutral-400">3.1-flash-lite / 2.5 Flash</div>
                 </button>
                 <button
                   type="button"
                   onClick={() => onChange({ modelVariant: 'gemini-nano-banana-2.1' })}
-                  className={`p-2 rounded-md border text-left transition-colors ${
+                  className={`p-2 rounded-md border text-left transition-colors cursor-pointer ${
                     campaign.modelVariant === 'gemini-nano-banana-2.1'
                       ? 'border-neutral-900 dark:border-white bg-white dark:bg-neutral-700 font-semibold text-neutral-900 dark:text-white'
                       : 'border-neutral-200 dark:border-neutral-700 text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
                   }`}
                 >
                   <div>Nano-Banana 2.1</div>
-                  <div className="text-[9px] text-neutral-400">2K/4K Pro Resolution</div>
+                  <div className="text-[9px] text-neutral-400">High-Res Master Output</div>
                 </button>
               </div>
             </div>
@@ -576,6 +652,59 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                   </div>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: BRAND GUIDELINES */}
+        {activeTab === 'guidelines' && (
+          <div className="space-y-4">
+            <div className="p-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 space-y-1">
+              <span className="font-bold text-neutral-900 dark:text-white block text-xs">
+                Brand Voice & Art Direction
+              </span>
+              <p className="text-[11px] text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                Quiet authority, mathematical precision, and tactile permanence. Never scream; let monolithic geometry speak.
+              </p>
+            </div>
+
+            <div>
+              <span className="font-bold text-neutral-800 dark:text-neutral-200 block mb-1.5 text-xs">
+                Mandatory Campaign Rules
+              </span>
+              <div className="space-y-2 text-[11px]">
+                <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+                  <span className="font-bold block">✓ DO: Pure Spatial Still Life</span>
+                  <p className="text-[10px] text-emerald-700 dark:text-emerald-400 mt-0.5">
+                    Frame the product on brutalist concrete, basalt stone, or illuminated museum pedestals with generous negative space.
+                  </p>
+                </div>
+
+                <div className="p-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-800 dark:text-red-300">
+                  <span className="font-bold block">✕ DON'T: Never Show Humans</span>
+                  <p className="text-[10px] text-red-700 dark:text-red-400 mt-0.5">
+                    Strict prohibition on human models, faces, eyes, hands, or wearing shots. Pure product centerpiece only.
+                  </p>
+                </div>
+
+                <div className="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-800 dark:text-blue-300">
+                  <span className="font-bold block">🔒 Consistency Lock</span>
+                  <p className="text-[10px] text-blue-700 dark:text-blue-400 mt-0.5">
+                    All mediums must reflect identical material finishes ({dna.materials[0] || 'Titanium'}) and color tokens ({dna.primaryColor}).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <span className="font-bold text-neutral-800 dark:text-neutral-200 block mb-1 text-xs">
+                Typography Scale
+              </span>
+              <div className="p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 font-mono text-[10px] text-neutral-600 dark:text-neutral-400 space-y-1">
+                <div>HEADLINES: Plus Jakarta Sans / Playfair Serif 700</div>
+                <div>SUBCOPY: 400 Regular with 1.5 line height</div>
+                <div>METADATA: JetBrains Mono 500 Uppercase</div>
+              </div>
             </div>
           </div>
         )}

@@ -18,6 +18,7 @@ import {
   Info,
   Clock,
   Filter,
+  AlertTriangle,
 } from 'lucide-react';
 import { Campaign, MediumAsset, MediumType, Collaborator, ActivityLog } from './types';
 import { INITIAL_CAMPAIGNS, MEDIUM_CATALOG } from './data/defaultCampaigns';
@@ -32,6 +33,7 @@ import { DownloadsDashboard } from './components/DownloadsDashboard';
 import { ActivityHistoryDrawer } from './components/ActivityHistoryDrawer';
 import { ConsistencyComparator } from './components/ConsistencyComparator';
 import { CampaignSwitcherModal } from './components/CampaignSwitcherModal';
+import { ModelDiagnosticsModal } from './components/ModelDiagnosticsModal';
 import JSZip from 'jszip';
 
 const DEFAULT_COLLABORATORS: Collaborator[] = [
@@ -150,6 +152,7 @@ export default function App() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isCampaignSwitcherOpen, setIsCampaignSwitcherOpen] = useState(false);
   const [isConsistencyCheckOpen, setIsConsistencyCheckOpen] = useState(false);
+  const [isDiagnosticsOpen, setIsDiagnosticsOpen] = useState(false);
 
   // Filter & Layout view
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>('all');
@@ -899,6 +902,52 @@ export default function App() {
           logActivity('Imported Campaign JSON', `Imported ${newCamp.name}.`, 'sync');
         }}
       />
+
+      {/* MODAL 5: Model Diagnostics & Error Troubleshooting */}
+      <ModelDiagnosticsModal
+        isOpen={isDiagnosticsOpen}
+        onClose={() => setIsDiagnosticsOpen(false)}
+        onRunTest={() => {
+          const arCamp = campaigns.find(
+            (c) =>
+              c.productName.toLowerCase().includes('augmented') ||
+              c.productName.toLowerCase().includes('glasses') ||
+              c.id === 'camp-ar-glasses'
+          );
+          if (arCamp) {
+            setActiveCampaignId(arCamp.id);
+            handleGenerateCampaign(['billboard', 'newspaper', 'social_post']);
+          } else {
+            handleUpdateCampaign({
+              productName: 'Augmented Reality AI glasses',
+              category: 'Spatial Optics & Wearable Computing',
+              tagline: 'Invisible Intelligence. Carved in Titanium.',
+              description:
+                'Ultra-minimalist augmented reality spatial computing eyewear engineered with diffractive optical waveguide lenses and neural micro-projectors in an aerospace Grade-5 titanium chassis. Pure still-life display without human subjects.',
+            });
+            handleGenerateCampaign(['billboard', 'newspaper', 'social_post']);
+          }
+        }}
+      />
+
+      {/* Floating Bottom-Right Error & Diagnostics Assistant Button */}
+      <div className="fixed bottom-4 right-4 z-40">
+        <button
+          onClick={() => setIsDiagnosticsOpen(true)}
+          className="flex items-center gap-2 px-3 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-xs font-semibold cursor-pointer group"
+          title="Click to view model errors, diagnostics, and test AR glasses"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+          <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+          <span className="font-medium">Troubleshoot & Models</span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-600">
+            Nano-Banana Only
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
