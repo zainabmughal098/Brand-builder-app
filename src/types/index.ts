@@ -64,6 +64,7 @@ export interface Campaign {
   description: string;
   targetAudience: string;
   brandEssence: string;
+  brandVoiceTone?: number; // 0 (Minimalist/Professional) to 100 (Bold/Disruptive)
   modelVariant: 'gemini-3.1-flash-lite-image' | 'gemini-nano-banana-2.1';
   visualDna: VisualDNA;
   mediums: MediumAsset[];

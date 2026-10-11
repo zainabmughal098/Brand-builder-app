@@ -279,6 +279,7 @@ app.post('/api/generate-medium', async (req: Request, res: Response) => {
     mediumType,
     aspectRatio = '1:1',
     customPrompt,
+    brandVoiceTone = 50,
     modelVariant = 'gemini-3.1-flash-lite-image',
   } = req.body;
 
@@ -287,10 +288,25 @@ app.post('/api/generate-medium', async (req: Request, res: Response) => {
     return;
   }
 
-  // Construct rigorous prompt enforcing product consistency, visual DNA, and NO PEOPLE
+  // Derive tone directive from the Brand Voice slider (0: Minimalist/Professional <-> 100: Bold/Disruptive)
+  const toneValue = Number(brandVoiceTone) || 50;
+  let toneLabel = 'Minimalist / Professional';
+  let toneGuidance = 'Restrained, understated Swiss minimalism, quiet confidence, clinical precision, calm and authoritative copy.';
+
+  if (toneValue >= 65) {
+    toneLabel = 'Bold / Disruptive';
+    toneGuidance = 'Bold, disruptive, rebellious, high-impact provocative headline tone, assertive raw energy, convention-shattering presence.';
+  } else if (toneValue > 35) {
+    toneLabel = 'Refined / Modern Progressive';
+    toneGuidance = 'Modern, refined, progressive architectural authority, disciplined yet assertive.';
+  }
+
+  // Construct rigorous prompt enforcing product consistency, visual DNA, Brand Voice tone, and NO PEOPLE
   const promptParts = [
     `Product Campaign Advertisement for: "${productName}" (${category || 'Industrial Design'}).`,
     `Medium: ${mediumType.replace(/_/g, ' ').toUpperCase()} mockup in high-end architectural setting.`,
+    `Brand Voice Tone (${toneValue}/100 - ${toneLabel}):`,
+    `- Tone Guidance: ${toneGuidance}`,
     `Visual DNA & Consistency Lock:`,
     `- Primary Color: ${visualDna?.primaryColor || '#1E1E24'} (${visualDna?.colorNames?.primary || 'Deep Tone'})`,
     `- Accent Color: ${visualDna?.accentColor || '#D97706'} (${visualDna?.colorNames?.accent || 'Highlight Tone'})`,
@@ -300,7 +316,7 @@ app.post('/api/generate-medium', async (req: Request, res: Response) => {
     `- Brand Mark: ${visualDna?.brandMark || 'Debossed minimalist circular emblem'}`,
     `Tagline / Context: "${tagline || 'Essential Elegance'}"`,
     customPrompt ? `Art Direction Note: ${customPrompt}` : '',
-    `Visual Style: Professional, ultra-minimalist, gallery quality, crisp lighting, photorealistic industrial design mockup.`,
+    `Visual Style: Professional, gallery quality, crisp lighting, photorealistic industrial design mockup expressing the ${toneLabel} brand voice.`,
     `CRITICAL NEGATIVE REQUIREMENT: STRICTLY NO PEOPLE, NO HUMANS, NO HANDS, NO FACES, NO HUMAN SHADOWS, NO COMMUTERS. Pure still-life product centerpiece only.`,
   ]
     .filter(Boolean)

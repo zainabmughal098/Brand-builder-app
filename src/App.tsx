@@ -358,6 +358,7 @@ export default function App() {
             visualDna: campaign.visualDna,
             mediumType: medType,
             aspectRatio: aspect,
+            brandVoiceTone: campaign.brandVoiceTone ?? 50,
             modelVariant: campaign.modelVariant,
           }),
         });
@@ -382,6 +383,14 @@ export default function App() {
           );
         }
 
+        const tone = campaign.brandVoiceTone ?? 50;
+        const subcopyText =
+          tone >= 65
+            ? `Disruptive high-impact expression for ${campaign.productName}. Shattering category convention.`
+            : tone <= 35
+            ? `Consistent architectural product expression for ${campaign.productName} in ${campaign.visualDna.materials[0]}.`
+            : `Modern progressive expression for ${campaign.productName} in ${campaign.visualDna.materials[0]}.`;
+
         const newAsset: MediumAsset = {
           id: `med-${medType}-${Date.now()}`,
           mediumType: medType,
@@ -389,7 +398,7 @@ export default function App() {
           aspectRatio: aspect,
           imageUrl: finalImageUrl,
           headline: campaign.tagline,
-          subcopy: `Consistent architectural product expression for ${campaign.productName} in ${campaign.visualDna.materials[0]}.`,
+          subcopy: subcopyText,
           mediumDescription: catalogItem?.environmentDescription || '',
           status: 'ready',
           modelUsed,
@@ -399,7 +408,7 @@ export default function App() {
           generatedAt: new Date().toISOString(),
           prompt:
             promptUsed ||
-            `Product campaign for ${campaign.productName}. Medium: ${medType}. Visual DNA locked: ${campaign.visualDna.primaryColor}, ${campaign.visualDna.finish}. STRICT NEGATIVE: Zero humans, no people, no faces, architectural still life only.`,
+            `Product campaign for ${campaign.productName}. Medium: ${medType}. Tone: ${tone}/100. Visual DNA locked: ${campaign.visualDna.primaryColor}, ${campaign.visualDna.finish}. STRICT NEGATIVE: Zero humans, no people, no faces, architectural still life only.`,
           negativePrompt: 'people, human, crowd, face, hands, body, pedestrians, commuters',
         };
 
@@ -479,6 +488,7 @@ export default function App() {
           visualDna: campaign.visualDna,
           mediumType: asset.mediumType,
           aspectRatio: asset.aspectRatio,
+          brandVoiceTone: campaign.brandVoiceTone ?? 50,
           modelVariant: campaign.modelVariant,
         }),
       });

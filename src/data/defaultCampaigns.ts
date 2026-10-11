@@ -89,6 +89,7 @@ export const INITIAL_CAMPAIGNS: Campaign[] = [
     description: 'Ultra-minimalist augmented reality spatial computing eyewear engineered with diffractive optical waveguide lenses and neural micro-projectors in an aerospace Grade-5 titanium chassis. Pure still-life display without human subjects.',
     targetAudience: 'Architects, spatial designers, tech purists, minimalists',
     brandEssence: 'Weightless, luminous, architectural, hyper-precision',
+    brandVoiceTone: 20,
     modelVariant: 'gemini-3.1-flash-lite-image',
     version: 1,
     lastEditedBy: 'bsai23024 (Lead)',

@@ -13,6 +13,7 @@ import {
   CheckSquare,
   Square,
   Wand2,
+  Volume2,
 } from 'lucide-react';
 import { Campaign, MediumType, VisualDNA } from '../types';
 import { MEDIUM_CATALOG } from '../data/defaultCampaigns';
@@ -91,23 +92,55 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
     { name: 'High-Tech Spatial', desc: 'Dark obsidian background, subtle diffractive holographic prism glints' },
   ];
 
+  const currentTone = campaign.brandVoiceTone ?? 25;
+
   const handleDraftCopy = () => {
     setIsDraftingCopy(true);
     setTimeout(() => {
       const isGlasses = /glass|eyewear|ar|augmented/i.test(campaign.productName);
       if (isGlasses) {
-        onChange({
-          tagline: 'Invisible Intelligence. Carved in Titanium.',
-          description: 'Ultra-lightweight augmented reality spatial computing eyewear engineered with diffractive optical waveguide lenses and neural micro-projectors in an aerospace Grade-5 titanium chassis. Pure still-life display without human subjects.',
-          category: 'Spatial Optics & Wearable Computing',
-          targetAudience: 'Architects, spatial designers, tech purists, minimalists',
-          brandEssence: 'Weightless, luminous, architectural, hyper-precision',
-        });
+        if (currentTone >= 65) {
+          onChange({
+            tagline: 'KILL THE SCREEN. WEAR THE REVOLUTION.',
+            description: 'Unapologetic spatial dominance. Diffractive optical waveguides engineered to shatter flat interfaces and dismantle convention. Raw Grade-5 titanium commanding the optical spectrum.',
+            category: 'Spatial Optics & Wearable Computing',
+            targetAudience: 'Disruptors, spatial pioneers, tech rebels',
+            brandEssence: 'Aggressive, groundbreaking, futuristic, provocative',
+          });
+        } else if (currentTone <= 35) {
+          onChange({
+            tagline: 'Invisible Intelligence. Carved in Titanium.',
+            description: 'Ultra-lightweight augmented reality spatial computing eyewear engineered with diffractive optical waveguide lenses and neural micro-projectors in an aerospace Grade-5 titanium chassis. Pure still-life display without human subjects.',
+            category: 'Spatial Optics & Wearable Computing',
+            targetAudience: 'Architects, spatial designers, tech purists, minimalists',
+            brandEssence: 'Weightless, luminous, architectural, hyper-precision',
+          });
+        } else {
+          onChange({
+            tagline: 'Next-Era Spatial Optics. Precision Engineered.',
+            description: 'Architectural augmented reality eyewear balancing structural discipline with diffractive wave optics. Milled aerospace Grade-5 titanium chassis designed for effortless spatial presence.',
+            category: 'Spatial Optics & Wearable Computing',
+            targetAudience: 'Innovators, modern designers, spatial computing pros',
+            brandEssence: 'Progressive, refined, sharp, commanding',
+          });
+        }
       } else {
-        onChange({
-          tagline: `Form Follows Restraint. Pure ${dna.materials[0] || 'Material'}.`,
-          description: `Sculptural ${campaign.category || 'industrial design'} object with seamless chamfered edges, finished in ${dna.finish}. Conceived without superfluous ornamentation.`,
-        });
+        if (currentTone >= 65) {
+          onChange({
+            tagline: `CONQUER CONVENTION. RAW ${dna.materials[0]?.toUpperCase() || 'MATERIAL'}.`,
+            description: `Defiant ${campaign.category || 'industrial design'} monolith created to reject the ordinary. High-voltage presence engineered in ${dna.finish}.`,
+          });
+        } else if (currentTone <= 35) {
+          onChange({
+            tagline: `Form Follows Restraint. Pure ${dna.materials[0] || 'Material'}.`,
+            description: `Sculptural ${campaign.category || 'industrial design'} object with seamless chamfered edges, finished in ${dna.finish}. Conceived without superfluous ornamentation.`,
+          });
+        } else {
+          onChange({
+            tagline: `Modern Geometry. Crafted in ${dna.materials[0] || 'Precision Material'}.`,
+            description: `Balanced architectural object presenting purposeful contours and enduring tactile finish in ${dna.finish}.`,
+          });
+        }
       }
       setIsDraftingCopy(false);
     }, 400);
@@ -261,6 +294,46 @@ export const BriefEditor: React.FC<BriefEditorProps> = ({
                     <div className="text-[9px] text-neutral-400 truncate mt-0.5">{st.desc}</div>
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Brand Voice Slider */}
+            <div className="p-3.5 rounded-xl bg-neutral-100/70 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <label className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5 text-xs">
+                  <Volume2 className="w-3.5 h-3.5 text-indigo-500" />
+                  <span>Brand Voice Tone</span>
+                </label>
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded-md font-semibold bg-white dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-600">
+                  {currentTone <= 35
+                    ? 'Minimalist / Professional'
+                    : currentTone >= 65
+                    ? 'Bold / Disruptive'
+                    : 'Modern Progressive'}{' '}
+                  ({currentTone}%)
+                </span>
+              </div>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value={currentTone}
+                onChange={(e) => onChange({ brandVoiceTone: Number(e.target.value) })}
+                className="w-full h-1.5 bg-neutral-300 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-neutral-900 dark:accent-white"
+              />
+
+              <div className="flex justify-between items-center text-[10px] text-neutral-500 dark:text-neutral-400 font-medium">
+                <span className={currentTone <= 35 ? 'font-bold text-neutral-900 dark:text-white' : ''}>
+                  Minimalist / Professional
+                </span>
+                <span className={currentTone > 35 && currentTone < 65 ? 'font-bold text-neutral-900 dark:text-white' : ''}>
+                  Progressive
+                </span>
+                <span className={currentTone >= 65 ? 'font-bold text-neutral-900 dark:text-white' : ''}>
+                  Bold / Disruptive
+                </span>
               </div>
             </div>
 
